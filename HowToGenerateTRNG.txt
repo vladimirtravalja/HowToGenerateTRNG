@@ -2,45 +2,46 @@ How to generate "true random numbers" using athospheric noise:
 
 Intro:
 
-There are many techniques to create True random numbers, so I wanted to find the cheapest and the easiest way to generate those numbers by utilizing quantum phenomena. The best and easiest way would be to use athmospheric noise.
+There are many techniques to create True random numbers, so I wanted to find the cheapest and the easiest way to generate those numbers by utilizing quantum phenomena. The best and easiest way would be to use atmospheric noise.
+
 I did a little research about it and I found one excellent article that was quite old and that wouldn't work on newer versions of Linux/Unix, so I decided to create my version of it, to help everyone that wants to do the same thing, and save their precious time.
+
 This article is dedicated to the original author Rich Van Rein from OpenFortress
-I encourage everyone so spare few minutes and read original article...
+
+I encourage everyone so spare few minutes and read original article... 
 
 Link to the original link:
+
 http://openfortress.org/cryptodoc/random/
 
+ Steps to create True random numbers:
 
-Steps to create True random numbers:
-
-1. Your first step would be to find radio with AM tuner (amplitude modulator). Why AM, becuase standard FM (frequency modulator) is based on beacon signal wrapped with sound. I will quote original author: "radio can recognise absence of a station and refuse to tune in, or adapt tuning to a nearby station." AM doesn't have that issue.
-
-2. Even though in my country AM is almost unused, or should I say there are no broadcasting radio stations, in other countries this might be still "active". Set your frequency between radio stations, so you can hear "white noise". White noise is non reproducable becuase it relies on electromagnetic interference, cosmic rays, distant electrostatic discharges such as thunder lightings, etc. It is believed that is one of true quantum phenomenas. Now let's back to the business.
-
-3. After you set frequency between stations, you need to have a linux or unix machine (sorry I feel no love for the windows today :) ).
+Your first step would be to find radio with AM tuner (amplitude modulator). Why AM, becuase standard FM (frequency modulator) is based on beacon signal wrapped with sound. I will quote original author: "radio can recognize absence of a station and refuse to tune in, or adapt tuning to a nearby station." AM doesn't have that issue.
+Even though in my country AM is almost unused, or should I say there are no broadcasting radio stations, in other countries this might be still "active". Set your frequency between radio stations, so you can hear "white noise". White noise is non reproducible because it relies on electromagnetic interference, cosmic rays, distant electrostatic discharges such as thunder lightnings, etc. It is believed that is one of true quantum phenomena. Now let's back to the business.
+After you set frequency between stations, you need to have a linux or unix machine (sorry I feel no love for the windows today :) ).
 What I noticed in the original article what author wrote it: he used an old oss (open sound system) for audio. In the modern versions of linux/unix, this is replaced by alsa mixer or should I be precise and say pulseaudio.
-The author mentioned that he used a small applicatin to record a sound, but have failed to explain where he got it. This application is called "rec". It records a sound from your microphone. Well, to cut to the chase, please follow next step. :)
 
-4. On your *nix box, install command-line audio processing tool called "sox". I am using Ubuntu, but you may also find it in other linux flavors in their official repository. (before you start, be sure to update your repository)
+The author mentioned that he used a small application to record a sound, but have failed to explain where he got it. This application is called "rec". It records a sound from your microphone. Well, to cut to the chase, please follow next step. :)
 
-For ubuntu command would be: sudo apt-get install sox 
+On your *nix box, install command-line audio processing tool called "sox". I am using Ubuntu, but you may also find it in other linux flavors in their official repository. (before you start, be sure to update your repository)
+For ubuntu command would be: sudo apt-get install sox
 
-Debian: sudo apt-get install sox 
-or 
+Debian: sudo apt-get install sox
+
+or
+
 sudo aptitude install sox
 
-Since I don't have RedHat flavor distro, my best gues would be: 
-sudo yum install sox 
+Since I don't have RedHat flavor distro, my best gues would be:
+
+sudo yum install sox
+
 or on newer versions of RedHat flavors: sudo dnf install sox
 
-5. Great, now that you installed your application, you need to know that your "sox" application contains "rec" application that we will use to record a sound.
-
-6. Instead of using microphones and catching other noises such as TV, radio, or something that might be recorded, I decided to directly transfer sound from radio to PC. To be able to do this I had to get TRRS to TRS patch cable. I would recommend you to get a "Rode SC7" (this actually worked perfecty on my laptop that had an output and input in the same 3.5mm phone jack)
-
-7. Connect TRS (two "ring" jack) into your radio tuner, and TRRS (three ring jack) into your microphone on your PC. Set volume on your radio to (2/3) of his max volume power. Why? simply becuse you wish to catch all "small" background noise that will later be converted to bits.
-
-8. This command will start recording your sound.
- 
+Great, now that you installed your application, you need to know that your "sox" application contains "rec" application that we will use to record a sound. 
+Instead of using microphones and catching other noises such as TV, radio, or something that might be recorded, I decided to directly transfer sound from radio to PC. To be able to do this I had to get TRRS to TRS patch cable. I would recommend you to get a "Rode SC7" (this actually worked perfectly on my laptop that had an output and input in the same 3.5mm phone jack) Link: http://www.rode.com/accessories/sc7
+Connect TRS (two "ring" jack) into your radio tuner, and TRRS (three ring jack) into your microphone on your PC. Set volume on your radio to (2/3) of his max volume power. Why? simply because you wish to catch all "small" background noise that will later be converted to bits.
+This command will start recording your sound.
 rec -c 1 -r 8000 -t wav -e signed-integer testfile
 
 Since in original article command is bit different due to an old OSS sound system, command from above should work on all newer versions of *nix operating systems that uses pulseaudio and alsa.
@@ -48,30 +49,43 @@ Since in original article command is bit different due to an old OSS sound syste
 Explaining the commands:
 
 rec - An application that is recording the sound
+
 -c 1 - is the channel 1 that we selected.
+
 -r 8000 - is the 8000Hz sampling or 8KHz
+
 -t wav - is basically a format of the output sound file
+
 -e signed-integer - A type of encoding as signed integer or should I say it will used with a 16 bit encoding size.
-testfile - basicall is how your file will be called. Totally depends by your preferences.
 
-9. How long you will record sound, it also totally depends on you, but keep in mind that not all bits will be used for generating a random numbers. (To end the recording you need to press: Ctrl-C). 
+testfile - basically is how your file will be called. Totally depends by your preferences.
 
+How long you will record sound, it also totally depends on you, but keep in mind that not all bits will be used for generating a random numbers. (To end the recording you need to press: Ctrl-C).
 To explain what I meant, I will again quote original author Rick Van Rein: (why would I need to invent a wheel if someone has already invented one)
 
 "Not all these bits are usable. Notably, the higher bits tend to change at a slower pace because they reveal a lot of the ground tones of your noise. Better pick a pretty-low bit and leave it to that. To evade most bias (that would be easiest noticed in bit.0) you could prefer bit.1 over bit.0 however.
 
 Even if the choice for bit.1 probably evades a lot of bias, it is still necessary to compensate for any lack of fairness. So, you take two samples at a time, and compare them. Depending on the result, your discard it, or generate a fair bit:
 
-Sample #1	Sample #2	Result
-0	0	Ignore
-0	1	0
-1	0	1
-1	1	Ignore
-Do not reuse the samples if the result was ignored -- this is almost certain to lead to alternating sequences like 010101010101... which fails to meet the requirement of high entropy."
+Sample #1               Sample #2               Result
 
-Basically to overcome this problem, author has already wrote a small program written in C programming language. This program doesn't only remove "biased" bits, but also a header of an output wav file...
+0              0              Ignore
 
-C - Code:
+0              1              0
+
+1              0              1
+
+1              1              Ignore 
+
+Do not reuse the samples if the result was ignored -- this is almost certain to lead to alternating sequences like 010101010101... which fails to meet the requirement of high entropy." 
+
+Basically to overcome this problem, author has already wrote a small program written in C programming language. This program doesn't only remove "biased" bits, but also a header of an output .wav file...
+
+C - Code link:
+
+http://openfortress.org/cryptodoc/random/noise-filter.c
+
+or
 
 /* $Id:Not checked in yet$
  *
@@ -129,40 +143,44 @@ int main (int argc, char *argv []) {
  */
 
 
-10. Save the code from the above into noise-filter.c or any chose another name. Your choice... 
-Next step would be compiling a source code. To do that, execute the command:
+Save the code from the above into noise-filter.c or any chose another name. Your choice...
+Next step would be compiling a source code. To do that, execute the command: 
 
-gcc -o noise-filter noise-filter.c 
+gcc -o noise-filter noise-filter.c
 
 Explanation of a source code:
 
 gcc -o - is a compiler that is used to compile the code, while "o" flag is for setting the output file which in our case is noise-filter
-noise-filter - is an output file. This will be our compiled program
-noise-filter.c - is a source code that is used to be compiled into noise-filter program
 
-11. Last step for you would be, filtering the wav file into "true random number" generated file.
+noise-filter - is an output file. This will be our compiled program
+
+noise-filter.c - is a source code that is used to be compiled into noise-filter program 
+
+Last step for you would be, filtering the wav file into "true random number" generated file.
 To do that execute code:
 
-cat testfile.wav | ./noise-filter > radnomNumbersFile
+cat testfile.wav | ./noise-filter > radnomNumbersFile 
 
 Explanation of the command:
 
 cat - concatinate file program alows you to concatinate content or to preview the file.
-| - this is a pipe that is used to channel all the output of the testfile.wav, and pass it into our compiled "filter" application
-./noise-filter - this is basically executing the program, and all content from our testfile.wav is passed as a parameter into our compiled filter
-> randomNumberFile - is the way of outputing the filtered content, or should I say an output of our true random generated numbers.
 
+| - this is a pipe that is used to channel all the output of the testfile.wav, and pass it into our compiled "filter" application
+
+./noise-filter - this is basically executing the program, and all content from our testfile.wav is passed as a parameter into our compiled filter
+
+> randomNumberFile - is the way of outputting the filtered content, or should I say an output of our true random generated numbers. 
 
 Cool, You have generated your true random generated numbers into the file, but what can you do with it?
 
 Well, there are lot of sites that are telling you how to generate a true random numbers, but almost all of them failed to saying how to use your file...
-There is a true good explanation for that. Linux kernel is using by default /dev/urandom which is pool of PRNG (pseudo random numbers generated by the math algorithms), and there is another entropy pool source and that is /dev/random. /dev/random is also PRNG that is not longer used by default since it has blocking issues. The one good of /dev/random is, it has the capability of being filled with other sources as well. For example, if you install rngd application - rng-tools, you will get all sort of additional functionalities such as utilizing the hardware to generate TRNG (true random generated numbers), or in our case to set our file as the entropy source. What rng-tools will do, it will use our file as an entropy source and it will fill the /dev/random pool. Keep in mind that it will mix PRNG numbers with our TRNG numbers and feed our kernel with it. Again, it will not only use our TRNG file, but will improve already generated PRNG and potentialy increase the security... 
 
+There is a true good explanation for that. Linux kernel is using by default /dev/urandom which is pool of PRNG (pseudo random numbers generated by the math algorithms), and there is another entropy pool source and that is /dev/random. /dev/random is also PRNG that is not longer used by default since it has blocking issues. The one good of /dev/random is, it has the capability of being filled with other sources as well. For example, if you install rngd application - rng-tools, you will get all sort of additional functionalities such as utilizing the hardware to generate TRNG (true random generated numbers), or in our case to set our file as the entropy source. What rng-tools will do, it will use our file as an entropy source and it will fill the /dev/random pool. Keep in mind that it will mix PRNG numbers with our TRNG numbers and feed our kernel with it. Again, it will not only use our TRNG file, but will improve already generated PRNG and potentially increase the security...
 
 I hope this tutorial will help somebody that is concerned with information security. (or someone that is too paranoid ;) )
 
 P.S If anyone encounter an issues using this tutorial and needs a help, please contact me via email: dovla091@gmail.com I will try to reply on your question ASAP.
+
 Also if somebody notice an incorrect information it this tutorial, please let me know so I may correct it and improve it.
 
 Best regards.
-   
